@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Visualisierung der Pflegedaten</title>
+
+  <!-- Projekt-CSS -->
+  <link rel="stylesheet" href="src/style.css" />
+
+  <!-- Font Awesome für Icon-Elemente -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+
+<body>
+  <!-- Werkzeugleiste Buttons -->
+  <header id="werkzeugleiste">
+    <h2>Webtool für Pflegedaten</h2>
+    <button id="speichern">Speichern</button>
+    <button id="laden">Laden</button>
+    <input type="file" id="dateieingabe" accept="application/json">
+    <button id="zuruecksetzen">Zurücksetzen</button>
+  </header>
+
+  <!-- Studien-Metadaten Teilnehmer, welche gruppe, je nachdem ob gruppe A oder B beispiel anzeigen und bei bedarf Notiz einfügen option-->
+  <div id="studienMeta">
+    <div>
+      <label for="teilnehmerId">Teilnehmer-ID</label><br>
+      <input id="teilnehmerId" class="form-control" type="text" placeholder="z.B. Teilnehmer 1">
+    </div>
+
+    <div>
+      <label for="aufgabe">Aufgabe</label><br>
+      <select id="aufgabe" class="form-control">
+        <option value="pflege">Pflegerelevante Daten</option>
+        <option value="fachfremd">Fachfremde Daten</option>
+      </select>
+    </div>
+
+    <div class="radio-row">
+      <label>Gruppe</label><br>
+      <label><input type="radio" name="metaGruppe" value="A"> Gruppe A</label>
+      <label><input type="radio" name="metaGruppe" value="B"> Gruppe B</label>
+    </div>
+
+    <div>
+      <button id="btnBeispiele" type="button" class="btn-primary">Beispiele anzeigen</button>
+      <button id="notizUmschalten" type="button" class="btn-primary">Notiz</button>
+    </div>
+  </div>
+
+  <main id="hauptbereich">
+    <!-- Linke Seitenleiste: Optionen mit Diagrammen und Hilfelementen auswähl -->
+    <aside id="seitenleisteLinks">
+      <h4>Diagramme</h4>
+      <div class="paletten-element" data-typ="liniendiagramm" draggable="true">Liniendiagramm</div>
+      <div class="paletten-element" data-typ="balkendiagramm" draggable="true">Balkendiagramm</div>
+      <div class="paletten-element" data-typ="kreisdiagramm" draggable="true">Kreisdiagramm</div>
+      <div class="paletten-element" data-typ="zeitstrahl" draggable="true">Zeitstrahl</div>
+
+      <h4>Hilfselemente</h4>
+      <div class="paletten-element" data-typ="ampel" draggable="true">Ampelsymbol</div>
+      <div class="paletten-element" data-typ="trendpfeil" draggable="true">Trendpfeil</div>
+      <div class="paletten-element" data-typ="symbol" draggable="true">Icons</div>
+      <div class="paletten-element" data-typ="farbcodierung" draggable="true">Farbkodierung</div>
+      <div class="paletten-element" data-typ="text" draggable="true">Text</div>
+    </aside>
+
+    <!-- Arbeitsfläche  für Drag and Drop: Hier landen die anlegten Elemente von Linkeseite -->
+    <section id="arbeitsflaeche"></section>
+
+    <!-- Rechte Seitenleiste: Bearbeitung von den Elementen Titel eingabe, Größe breite ändern farbe icons Pfeile etc auswählen-->
+    <aside id="seitenleisteRechts">
+      <div id="hinweis-keine-auswahl">Kein Element ausgewählt</div>
+
+      <form id="inspektor">
+        <div class="feld">
+          <label for="eigTitel">Titel</label>
+          <input id="eigTitel" type="text">
+        </div>
+
+        <!-- Kreisdiagramm -->
+        <div class="feld nur-kreis">
+          <label for="eigKreisStichpunkte">Stichpunkte (eine pro Zeile)</label>
+          <textarea id="eigKreisStichpunkte" rows="4"
+            placeholder="z.B.&#10;Mobilität&#10;Ernährung&#10;Schmerz"></textarea>
+        </div>
+
+        <!-- Generische Farbe -->
+        <div class="feld farbe-allgemein">
+          <label for="eigFarbeAllgemein">Farbe</label>
+          <select id="eigFarbeAllgemein">
+            <option value="neutral">Blau</option>
+            <option value="gruen">Grün</option>
+            <option value="gelb">Gelb</option>
+            <option value="rot">Rot</option>
+            <option value="orange">Orange</option>
+            <option value="violett">Violett</option>
+            <option value="grau">Grau</option>
+            <option value="braun">Braun</option>
+            <option value="schwarz">Schwarz</option>
+          </select>
+        </div>
+
+        <!-- Spezielle Farben für das Element Ampel -->
+        <div class="feld nur-ampel">
+          <label for="eigFarbeAmpel">Farbe (Ampel)</label>
+          <select id="eigFarbeAmpel">
+            <option value="rot">Rot</option>
+            <option value="gelb">Gelb</option>
+            <option value="gruen">Grün</option>
+          </select>
+        </div>
+
+        <!-- Farbe nur für Farbcodierung -->
+        <div class="feld nur-farbcodierung">
+          <label for="eigFarbePalette">Farbe (Palette)</label>
+          <select id="eigFarbePalette">
+            <option value="neutral">Blau</option>
+            <option value="gruen">Grün</option>
+            <option value="gelb">Gelb</option>
+            <option value="rot">Rot</option>
+            <option value="orange">Orange</option>
+            <option value="violett">Violett</option>
+            <option value="grau">Grau</option>
+            <option value="braun">Braun</option>
+            <option value="schwarz">Schwarz</option>
+          </select>
+        </div>
+
+        <div class="feld nur-farbcodierung">
+          <label for="eigFarbkodierungGroesse">Größe (px)</label>
+          <input id="eigFarbkodierungGroesse" type="number" min="8" max="200" value="24">
+        </div>
+
+        <!-- Trendpfeil -->
+        <div class="feld nur-trendpfeil">
+          <label for="eigTrend">Trend</label>
+          <select id="eigTrend">
+            <option value="auf">↑ Steigend</option>
+            <option value="ab">↓ Fallend</option>
+            <option value="gleich">→ Gleich</option>
+          </select>
+        </div>
+        <div class="feld nur-trendpfeil">
+          <label for="eigPfeilgroesse">Pfeilgröße (px)</label>
+          <input id="eigPfeilgroesse" type="number" min="8" max="200">
+        </div>
+
+        <!-- Icon von Font Awesome für Pflege und fachfremde Daten -->
+        <div class="feld nur-symbol">
+          <label for="eigIconFA">Icon (Font Awesome)</label>
+          <select id="eigIconFA">
+            <option value="fa-stethoscope">Stethoskop</option>
+            <option value="fa-pills">Pillen</option>
+            <option value="fa-notes-medical">Arztbrief</option>
+            <option value="fa-heart-pulse">Herzfrequenz</option>
+            <option value="fa-syringe">Spritze</option>
+            <option value="fa-temperature-half">Temperatur</option>
+            <option value="fa-briefcase-medical">Arztkoffer</option>
+            <option value="fa-lungs">Lunge</option>
+            <option value="fa-cloud">Wolke</option>
+            <option value="fa-smog">Smog</option>
+            <option value="fa-car">Auto</option>
+            <option value="fa-city">Stadt</option>
+            <option value="fa-traffic-light">Ampel</option>
+            <option value="fa-triangle-exclamation">Warnung</option>
+          </select>
+        </div>
+        <div class="feld nur-symbol">
+          <label for="eigIconGroesse">Icon-Größe (px)</label>
+          <input id="eigIconGroesse" type="number" min="10" step="2" value="42">
+        </div>
+
+        <!-- Ampel -->
+        <div class="feld nur-ampel">
+          <label for="eigAmpelSkalierung">Skalierung</label>
+          <input id="eigAmpelSkalierung" type="number" min="0.5" max="2" step="0.1">
+        </div>
+
+        <!-- Zeitstrahl -->
+        <div class="feld nur-zeitstrahl">
+          <label for="eigFortschritt">Position (%)</label>
+          <input id="eigFortschritt" type="range" min="0" max="100">
+          <output id="eigFortschrittAusgabe"></output>
+        </div>
+
+        <!-- Freitext -->
+        <div class="feld nur-text">
+          <label for="eigText">Text</label>
+          <textarea id="eigText" rows="3"></textarea>
+        </div>
+        <div class="feld nur-text">
+          <label for="eigTextgroesse">Textgröße (px)</label>
+          <input id="eigTextgroesse" type="number" min="8" max="100">
+        </div>
+
+        <!-- Größe -->
+        <div class="groessenraster">
+          <div>
+            <label for="eigBreite">Breite</label>
+            <input id="eigBreite" type="number" min="50" max="2000">
+          </div>
+          <div>
+            <label for="eigHoehe">Höhe</label>
+            <input id="eigHoehe" type="number" min="20" max="2000">
+          </div>
+        </div>
+
+        <!-- Gruppentag -->
+        <div class="feld">
+          <label for="eigKategorie">Kategorie</label>
+          <input id="eigKategorie" type="text" placeholder="z.B. Vitalwerte">
+        </div>
+
+        <button type="button" id="elementLoeschen">Löschen</button>
+      </form>
+    </aside>
+  </main>
+
+  <!-- Chart.js für Linien-/Balkendiagramme -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- App-Logik -->
+  <script src="src/app.js"></script>
+</body>
+
+</html>

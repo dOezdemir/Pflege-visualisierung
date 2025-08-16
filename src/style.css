@@ -1,0 +1,395 @@
+/* ============================================
+   Grundlayout für die Seite
+   ============================================ */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 13px;
+  color: #333;
+}
+
+h2 {
+  text-align: center;
+  font-size: 15px;
+  color: #333;
+  font-weight: bold;
+}
+
+/* ============================================
+   Buttons & Form Controls (neu)
+   ============================================ */
+.btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+.btn:hover {
+  background: #f5f5f5;
+}
+
+.btn-primary {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #1e88e5;
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #1669c1;
+}
+
+.form-control {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+/* ============================================
+   Werkzeugleiste
+   ============================================ */
+header#werkzeugleiste {
+  background: #a9cbf2;
+  padding: 6px 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+header#werkzeugleiste button {
+  padding: 6px 10px;
+  margin-right: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+header#werkzeugleiste button:hover {
+  background: #e9e9e9;
+}
+
+/* Datei-Input verstecken (ehem. inline) */
+#dateieingabe {
+  display: none;
+}
+
+/* ============================================
+   Studien-Metadaten (ehem. inline)
+   ============================================ */
+#studienMeta {
+  display: flex;
+  gap: 12px;
+  margin: 10px;
+  align-items: flex-end;
+}
+
+#studienMeta label {
+  font-size: 12px;
+}
+
+#studienMeta .radio-row label+label {
+  margin-left: 6px;
+}
+
+/* ============================================
+   Hauptbereich & Seitenleisten (ehem. inline ergänzt)
+   ============================================ */
+#hauptbereich {
+  display: flex;
+  height: calc(100vh - 100px);
+}
+
+#seitenleisteLinks {
+  width: 200px;
+  padding: 10px;
+  border-right: 1px solid #ccc;
+}
+
+#arbeitsflaeche {
+  position: relative;
+  background: #fafafa;
+  /* Vereinheitlicht */
+  flex: 1;
+  overflow: hidden;
+}
+
+#seitenleisteRechts {
+  width: 250px;
+  padding: 10px;
+  border-left: 1px solid #ccc;
+  overflow: auto;
+}
+
+/* ============================================
+   Linke Seitenleiste (Palette)
+   ============================================ */
+#seitenleisteLinks .paletten-element {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  margin-bottom: 6px;
+  cursor: grab;
+  user-select: none;
+}
+
+#seitenleisteLinks .paletten-element:hover {
+  background: #f5f5f5;
+}
+
+/* ============================================
+   Arbeitsfläche Drag and Drop Fläche
+   ============================================ */
+.leinwand-element {
+  position: absolute;
+  background: #fff;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.leinwand-element.ausgewaehlt {
+  border-color: #1e88e5;
+  box-shadow: 0 0 4px rgba(30, 136, 229, 0.6);
+}
+
+.leinwand-element header {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.leinwand-element .inhalt {
+  height: calc(100% - 20px);
+}
+
+/* Kompakte Elemente: zusammengeführt (vorher doppelt) */
+.leinwand-element.kompakt {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.leinwand-element.kompakt .inhalt {
+  height: auto;
+  /* überschreibt height: calc(100% - 20px) */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leinwand-element.kompakt.ausgewaehlt {
+  outline: 1px dashed #1e88e5;
+  outline-offset: 2px;
+  box-shadow: none;
+  /* keine große blaue Glühkante */
+}
+
+/* ============================================
+   Rechte Seitenleiste (Inspektor)
+   ============================================ */
+#seitenleisteRechts .feld {
+  margin-bottom: 8px;
+}
+
+#seitenleisteRechts label {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 2px;
+  color: #555;
+}
+
+#seitenleisteRechts input,
+#seitenleisteRechts select,
+#seitenleisteRechts textarea {
+  width: 100%;
+  padding: 4px 6px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+#seitenleisteRechts textarea {
+  resize: vertical;
+}
+
+#seitenleisteRechts button {
+  padding: 6px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+#seitenleisteRechts button:hover {
+  background: #f5f5f5;
+}
+
+/* Inspektor-Formular Standardzustand (ehem. inline) */
+#inspektor {
+  display: none;
+}
+
+/* Grid für Größenraster (ehem. inline) */
+.groessenraster {
+  display: none;
+  /* JS kann auf 'grid' umschalten */
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+/* Extra Abstand für Lösch-Button (ehem. inline) */
+#elementLoeschen {
+  margin-top: 10px;
+}
+
+/* ============================================
+   Notiz-Panel (verschiebbar)
+   ============================================ */
+.notiz-panel {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 200px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: none;
+}
+
+.notiz-kopf {
+  background: #f1f1f1;
+  padding: 4px 6px;
+  cursor: move;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+
+.notiz-kopf button.schliessen {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.notiz-inhalt {
+  padding: 6px;
+}
+
+.notiz-inhalt textarea {
+  width: 100%;
+  height: 80px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+/* ============================================
+   Ampel
+   ============================================ */
+.ampel {
+  display: flex;
+  flex-direction: column;
+  background: #222;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.ampel .lampe {
+  width: 20px;
+  height: 20px;
+  margin: 2px auto;
+  border-radius: 50%;
+}
+
+.ampel .lampe.rot {
+  background: red;
+}
+
+.ampel .lampe.gelb {
+  background: yellow;
+}
+
+.ampel .lampe.gruen {
+  background: green;
+}
+
+/* ============================================
+   Zeitstrahl (aufgehübscht)
+   ============================================ */
+.zeitstrahl {
+  --zs-color: #1e88e5;
+  /* wird per JS überschrieben */
+  padding: 12px 16px 18px;
+  /* Platz für Ticks/Labels */
+  border-radius: 10px;
+}
+
+.zs-track {
+  position: relative;
+  height: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.zs-rail {
+  position: relative;
+  width: 100%;
+  height: 10px;
+  background: linear-gradient(#e9e9e9, #dcdcdc);
+  border-radius: 999px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .7),
+    inset 0 -1px 0 rgba(0, 0, 0, .06);
+}
+
+.zs-thumb {
+  --p: 50;
+  /* Prozentwert */
+  position: absolute;
+  left: calc(var(--p) * 1%);
+  transform: translateX(-50%);
+  width: 6px;
+  height: 26px;
+  background: var(--zs-color);
+  border-radius: 3px;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, .9), 0 1px 4px rgba(0, 0, 0, .25);
+  cursor: ew-resize;
+}
+
+.zs-ticks {
+  position: relative;
+  height: 8px;
+  margin-top: 2px;
+}
+
+.zs-ticks span {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  height: 6px;
+  background: #bdbdbd;
+  transform: translateX(-50%);
+}
+
+.zs-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #666;
+  margin-top: 6px;
+}
+
+/* ============================================
+   Sonstiges
+   ============================================ */
+.ziehend {
+  /* optionaler Stil beim Ziehen */
+}
