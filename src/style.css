@@ -16,7 +16,7 @@ h2 {
 }
 
 /* ============================================
-   Buttons & Form Controls (neu)
+   Buttons & Form Controls 
    ============================================ */
 .btn {
   padding: 6px 12px;
@@ -376,4 +376,5 @@ header#werkzeugleiste button:hover {
   color: #666;
   margin-top: 6px;
 }
+
 
