@@ -18,7 +18,6 @@ https://github.com/dOezdemir/Pflege-visualisierung/
 - **Beispiele:** Button zeigt Demo-Layout (nur wenn *Gruppe A* gewählt ist)  
 - **Notizfeld:** Verschiebbares Panel für Anmerkungen  
 - **Speichern/Laden:** Layout als `.json` exportieren/importieren  
-- **Tastatur:** `Entf` löscht das ausgewählte Element
 
 ---
 
@@ -27,7 +26,7 @@ https://github.com/dOezdemir/Pflege-visualisierung/
 1. Öffne die **Live-Demo** (Link oben).  
 2. Ziehe links ein **Element** auf die **Arbeitsfläche** (Mitte).  
 3. **Klicke** ein Element an → rechts im **Inspektor** Titel, Farbe, Größe etc. einstellen.  
-4. Optional: **Notiz**, **Beispiele** (Gruppe A) oder **Zurücksetzen** nutzen.  
+4. Optional: **Notiz**, **Beispiele** (nur für Gruppe A) oder **Zurücksetzen** nutzen.  
 5. **Speichern** exportiert dein Layout als `layout.json`. Mit **Laden** kannst du es wieder importieren.
 
 > Tipp: Elemente frei anordnen; `Entf` entfernt das ausgewählte Element.
